@@ -1,5 +1,6 @@
--- Select bands with Glam rock as their main style, compute their lifespan, and rank by lifespan
-SELECT band_name,IFNULL(YEAR('2022-01-01') - YEAR(formed), 0) AS lifespan
-FROM metal_bands
-WHERE main_style = 'Glam rock'
-ORDER BY lifespan DESC;
+--script that lists all bands with Glam rock as their
+-- main style, ranked by their longevity
+SELECT band_name, (IFNULL(split, '2024') - formed) AS lifespan
+    FROM metal_bands
+    WHERE FIND_IN_SET('Glam rock', IFNULL(style, "")) > 0
+    ORDER BY lifespan DESC;
