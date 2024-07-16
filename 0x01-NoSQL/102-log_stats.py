@@ -1,7 +1,8 @@
 #!/usr/bin/env python3
-""" 102-log_stats.py """
+"""
+This file contains the function for task 12.
+"""
 from pymongo import MongoClient
-
 
 if __name__ == "__main__":
     """ Provides some stats about Nginx logs stored in MongoDB """
@@ -20,27 +21,16 @@ if __name__ == "__main__":
     status_check = nginx_collection.count_documents(
         {"method": "GET", "path": "/status"}
     )
-
     print(f'{status_check} status check')
 
-    top_ips = nginx_collection.aggregate([
-        {"$group":
-            {
-                "_id": "$ip",
-                "count": {"$sum": 1}
-            }
-         },
+    # Aggregating the top 10 most present IPs
+    pipeline = [
+        {"$group": {"_id": "$ip", "count": {"$sum": 1}}},
         {"$sort": {"count": -1}},
-        {"$limit": 10},
-        {"$project": {
-            "_id": 0,
-            "ip": "$_id",
-            "count": 1
-        }}
-    ])
+        {"$limit": 10}
+    ]
+    top_ips = nginx_collection.aggregate(pipeline)
 
-    print("IPs:")
-    for top_ip in top_ips:
-        ip = top_ip.get("ip")
-        count = top_ip.get("count")
-        print(f'\t{ip}: {count}')
+    print('IPs:')
+    for ip in top_ips:
+        print(f'\t{ip["_id"]}: {ip["count"]}')
