@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
-""" 12-log_stats.py """
+"""This file contains the function for task 12.
+"""
 from pymongo import MongoClient
 
 
