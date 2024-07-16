@@ -1,6 +1,5 @@
 #!/usr/bin/env python3
-'''
-11-schools_by_topics.py file
+'''This script will return the list of school having a specific topic.
 '''
 
 
